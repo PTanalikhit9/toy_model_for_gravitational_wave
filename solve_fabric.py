@@ -108,6 +108,16 @@ def gen_fabric_slope(param,radius, Mass, beta,root_number):
 
 # This function reads the fabric slope from a file
 def read_fabric_slope(filename):
+    """
+    The function read_fabric_slope reads the fabric slope values from a file and returns the values.
+
+    Parameters:
+    filename (str): The name of the file containing the fabric slope values.
+    
+    Returns:
+    slope (ndarray): An array of fabric slope values read from the file.
+    """
+    
     # Read the slope values from the file
     slope = filename
     # Return the slope values
@@ -115,6 +125,23 @@ def read_fabric_slope(filename):
 
 # This function calculates the fabric height for each radius
 def fabric_height(param,radius,slope,z0=0.001):
+    """
+    This function calculates the fabric height for each radius by using a numerical integration method, 
+    specifically the 4th-order Runge-Kutta method. 
+    
+    Parameters:
+    param: a dictionary containing values such as rmax, rmin, and grid_number.
+    radius: an array of radii values.
+    slope: an array of slope values.
+    z0: a default value for the first height, which is 0.001.
+    
+    Returns:
+    height: an array of calculated height values.
+    
+    Note that the fabric_height function uses the Runge-Kutta method to update the height values for each radius.
+    
+    """
+    
     # Initialize an array to store the fabric height values
     height = np.zeros(len(radius))
     # Set the first value of height to a default value of 0.001
@@ -125,6 +152,12 @@ def fabric_height(param,radius,slope,z0=0.001):
     # Loop through all the values of radius
     for i in range(len(radius)-1):
         # Calculate the intermediate values for height
+        """
+        The function loops through all the values of radius (excluding the last value), 
+        updating the height values using the 4th-order Runge-Kutta method. The method involves 
+        calculating intermediate values of height (k1, k2, k3, k4) using the slope values, 
+        and updating the height values using these intermediate values.
+        """
         k1 = (slope[i])*h
         k2 = (slope[i]+slope[i+1])*h*0.5
         k3 = (slope[i]+slope[i+1])*h*0.5
