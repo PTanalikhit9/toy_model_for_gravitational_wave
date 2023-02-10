@@ -23,4 +23,11 @@ The Simulation function performs the main simulation, updating the position and 
 
 Finally, the **plot_trajectory** function plots the trajectory of the ball on the fabric sheet.
 
+
+## Trajectory of the particle as simulated from the program
+
 ![This is an image](result_trajectory/trajectory.png)
+
+## The effective potential that gives the previous result
+
+![This is an image](result_trajectory/effective_potential.png)
