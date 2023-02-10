@@ -139,7 +139,6 @@ def fabric_height(param,radius,slope,z0=0.001):
     height: an array of calculated height values.
     
     Note that the fabric_height function uses the Runge-Kutta method to update the height values for each radius.
-    
     """
     
     # Initialize an array to store the fabric height values
@@ -170,6 +169,28 @@ def fabric_height(param,radius,slope,z0=0.001):
 
 
 def Effective_Potential(param,radius,beta,slope,height,ball_mass,Angular_Momentum,Hamiltonian,Mass):
+    """
+    Effective_Potential is a function that calculates the effective potential for each radius, given the parameters, 
+    beta, slope, height, ball mass, angular momentum, Hamiltonian, and mass.
+
+    Parameters:
+    param: a dictionary containing values such as rmax and rmin.
+    radius: an array of radii values.
+    beta: an array of beta values.
+    slope: an array of slope values.
+    height: an array of height values.
+    ball_mass: the mass of the ball.
+    Angular_Momentum: the angular momentum of the ball.
+    Hamiltonian: the Hamiltonian of the system.
+    Mass: the mass of the system.
+
+    Returns:
+    V_eff: an array of calculated effective potential values.
+
+    Note that the Effective_Potential function plots the effective potential curve 
+    and the Hamiltonian as a line and displays it, and returns the effective potential values.
+    """
+    
     # Gravitational constant
     g = 9.807
     # Initialize an array to store the effective potential values
