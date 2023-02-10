@@ -23,4 +23,4 @@ The Simulation function performs the main simulation, updating the position and 
 
 Finally, the **plot_trajectory** function plots the trajectory of the ball on the fabric sheet.
 
-![This is an image](trajectory.png)
+![This is an image](result_trajectory/trajectory.png)
