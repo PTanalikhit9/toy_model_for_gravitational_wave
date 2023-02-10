@@ -23,4 +23,4 @@ The Simulation function performs the main simulation, updating the position and 
 
 Finally, the **plot_trajectory** function plots the trajectory of the ball on the fabric sheet.
 
-![This is an image](https://github.com/PTanalikhit9/toy_model_for_gravitational_wave/blob/result_trajectory/trajectory.png?raw=true)
+![This is an image](https://github.com/PTanalikhit9/toy_model_for_gravitational_wave/blob/trajectory.png?raw=true)
