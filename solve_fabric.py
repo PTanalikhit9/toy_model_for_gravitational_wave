@@ -12,6 +12,7 @@ def obtain_root(polynomial):
     Returns:
     root (ndarray): An array of 4 roots of the polynomial equation.
     """
+    
     a, b, c, d, e = polynomial # Coefficients of polynomial equation ax^4+bx^3+cx^2+dx+e=0
     
     # Intermediate variables for calculation
@@ -65,23 +66,43 @@ def get_beta(param,radius,Mass):
     alpha = param['alpha']
     # Get the value of density from the input parameters
     density = param['density']
+    
     # Loop through all the values of radius
     for i in range(len(radius)):
         # Calculate beta for each radius
         beta[i] = (alpha/radius[i])*(Mass+np.pi*density*radius[i]*radius[i])
+        
     # Return the beta values
     return beta
 
 # This function generates the fabric slope for each radius
 def gen_fabric_slope(param,radius, Mass, beta,root_number):
+    """
+    This function generates the fabric slope for each radius.
+
+    Parameters:
+    param (dict): A dictionary of parameters. It should contain the following key-value pairs:
+    alpha: The value of alpha.
+    density: The value of density.
+    radius (ndarray): An array of radii.
+    Mass (float): The mass of the object.
+    beta (ndarray): An array of beta values.
+    root_number (int): An integer indicating which root of the polynomial to use in the calculation.
+    
+    Returns:
+    slope (ndarray): An array of fabric slope values.
+    """
+    
     # Gravitational constant
     g = 9.807
     # Initialize an array to store the fabric slope values
     slope = np.zeros(len(radius))
+    
     # Loop through all the values of radius
     for i in range(len(radius)):
         # Calculate the fabric slope for each radius
         slope[i] = obtain_root([1,-2*beta[i],beta[i]*beta[i],-2*beta[i],beta[i]*beta[i]])[root_number-1]
+        
     # Return the fabric slope values
     return slope
 
@@ -100,6 +121,7 @@ def fabric_height(param,radius,slope,z0=0.001):
     height[0] = z0
     # Calculate the step size for the radius values
     h = (param["rmax"]-param["rmin"])/(param["grid_number"])
+    
     # Loop through all the values of radius
     for i in range(len(radius)-1):
         # Calculate the intermediate values for height
@@ -109,6 +131,7 @@ def fabric_height(param,radius,slope,z0=0.001):
         k4 = slope[i+1]*h
         # Update the height values using a Runge-Kutta method
         height[i+1] = height[i]+(k1+2*k2+2*k3+k4)/6.0
+        
     # Return the fabric height values
     return height
 
@@ -124,6 +147,7 @@ def Effective_Potential(param,radius,beta,slope,height,ball_mass,Angular_Momentu
     potentialZ = np.zeros(len(radius))
     # Initialize an array to store the angular momentum values
     angular_mom = np.zeros(len(radius))
+    
     # Loop through all the values of radius
     for i in range(len(radius)):
         # Calculate the potential energy due to height
@@ -134,6 +158,9 @@ def Effective_Potential(param,radius,beta,slope,height,ball_mass,Angular_Momentu
         potential_V[i] = angular_mom[i] + potentialZ[i]
         # Calculate the effective potential values
         V_eff[i] = potential_V[i]*(1-2*(beta[i]/slope[i])+(beta[i]/slope[i])**2)+2*(Hamiltonian*beta[i]/slope[i])-Hamiltonian*(beta[i]/slope[i])**2
+    
+    
+    #Display the graph of effective potential
     # Set the starting point for the plot
     startingpoint = 600
     # Plot the effective potential curve
@@ -163,6 +190,7 @@ def solve_orbit(param,radius,V_eff,Hamiltonian,Angular_Momentum,ball_mass, N):
     phi (ndarray): An array of angles.
     new_radius (ndarray): An array of updated radii.
     """
+    
     # Get the location where the effective potential is less than the Hamiltonian
     location = np.where(V_eff < Hamiltonian)
     # Get the corresponding radius and effective potential
@@ -213,6 +241,8 @@ def solve_orbit(param,radius,V_eff,Hamiltonian,Angular_Momentum,ball_mass, N):
     ax.set_title("A line plot on a polar axis", va='bottom')
     return phi, new_radius
 
+
+
 param = {"density": 0.197, "elasticity": 112, "rmin": 0.0001, "rmax":1.0,"grid_number":20000, "alpha": 0.016532}
 radius = np.linspace(param['rmin'],param['rmax'],param['grid_number'])
 #print(radius)
@@ -225,8 +255,8 @@ slope = gen_fabric_slope(param,radius,Mass,beta,3)
 slope1 = gen_fabric_slope(param,radius,Mass,beta,4)
 height = fabric_height(param,radius,slope,0.001)
 ball_mass = 0.002113 #in kg
-Hamiltonian = 0.0039#0.00328#-0.02576 #in Joule
-Angular_Momentum= 0.000272#0.000284#0.00272 #in Kg m^2 s
+Hamiltonian = 0.0039 #0.00328 #-0.02576 #in Joule
+Angular_Momentum= 0.000272 #0.000284 #0.00272 #in Kg m^2 s
 V_eff = Effective_Potential(param,radius,beta,slope,height,ball_mass,Angular_Momentum,Hamiltonian,Mass)
 N = 20
 a = solve_orbit(param,radius,V_eff,Hamiltonian,Angular_Momentum,ball_mass, N)
