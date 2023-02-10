@@ -1,6 +1,7 @@
 # toy_model_for_gravitational_wave
 This is a computational approach to visualise and simulate the gravitational wave using the fabric. 
 
+## solve_fabric.py
 The code implements a simulation of a fabric sheet that is wrapped around a sphere, with the goal of finding its height profile along the sphere's circumference. 
 
 Here is a brief description of each function in the code: 
