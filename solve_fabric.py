@@ -1,38 +1,31 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+#This function solves the polynomial equation of the form: ax^4+bx^3+cx^2+dx+e=0 using Ferrari's method
 def obtain_root(polynomial):
-    #ax^4+bx^3+cx^2+dx+e=0
-    a = polynomial[0]
-    b = polynomial[1]
-    c = polynomial[2]
-    d = polynomial[3]
-    e = polynomial[4]
+    a, b, c, d, e = polynomial
     p = (8*a*c-3*b*b)/(8*a*a)
     q = (b*b*b-4*a*b*c+8*a*a*d)/(8*a*a*a)
     delta0 = c*c-3*b*d+12*a*e
     delta1 = 2*c*c*c-9*b*c*d+27*b*b*e+27*a*d*d-72*a*c*e
-    delta = (4*delta0*delta0*delta0-delta1*delta1)/(27.0)
-    #print(delta)
-    if (delta > 0):
+    delta = (4*delta0*delta0*delta0-delta1*delta1)/27
+    if delta > 0:
         phi = np.arccos(delta1/(2*np.sqrt(delta0*delta0*delta0)))
         S = 0.5*np.sqrt(-(2/3)*p+(2/(3*a))*np.sqrt(delta0)*np.cos(phi/3.0))
-    elif (delta <= 0):
+    else:
         Q = np.cbrt((delta1+np.sqrt(delta1*delta1-4*delta0*delta0*delta0))/2.0)
         S = 0.5*np.sqrt(-(2/3)*p+(1/(3*a))*(Q+delta0/Q))
     rh1 = 1/2*np.sqrt(-4*S*S-2*p+q/S)
     rh2 = 1/2*np.sqrt(-4*S*S-2*p-q/S)
-    #print('rh1 = ',rh1)
-    #print('rh2 = ',rh2)
-    root = np.zeros(4)
-    root[0] = -b/(4*a)-S+rh1
-    root[1] = -b/(4*a)-S-rh1
-    root[2] = -b/(4*a)+S+rh2
-    root[3] = -b/(4*a)+S-rh2
+    root = np.array([-b/(4*a)-S+rh1, -b/(4*a)-S-rh1, -b/(4*a)+S+rh2, -b/(4*a)+S-rh2])
     return root
+
 #print(obtain_root([3, 6, -123, -126, 1080]))
 #print(obtain_root([-20, 5, 17, -29, 87]))
 #print(obtain_root([2, 4, 6, 8, 10]))
+
+
+
 def get_beta(param,radius,Mass):
     beta = np.zeros(len(radius))
     g = 9.807
@@ -82,6 +75,8 @@ def Effective_Potential(param,radius,beta,slope,height,ball_mass,Angular_Momentu
     #plt.plot(radius[startingpoint:],V_eff[startingpoint:],'k', linewidth=3)
     #plt.plot(radius[startingpoint:],Hamiltonian*np.ones(len(radius)-startingpoint),'orange', linewidth=3)
     return V_eff
+
+
 def solve_orbit(param,radius,V_eff,Hamiltonian,Angular_Momentum,ball_mass, N):
     location = np.where(V_eff < Hamiltonian)
     new_radius,new_V_eff  = radius[location],V_eff[location]
